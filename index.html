@@ -139,18 +139,20 @@
 
   /* ---------- packages ---------- */
   .pk{padding:var(--space) 0}
-  .pk-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:3.4rem;flex-wrap:wrap;gap:1rem}
+  .pk-pad{padding-left:clamp(1.4rem,4vw,3rem);padding-right:clamp(1.4rem,4vw,3rem)}
+  .pk-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:3.4rem;flex-wrap:wrap;gap:1rem;padding-left:clamp(1.4rem,4vw,3rem);padding-right:clamp(1.4rem,4vw,3rem)}
   .pk-head h2{font-size:var(--text-h2);line-height:1}
   .pk-list{border-top:1px solid var(--line)}
-  .pk-item{position:relative;border-bottom:1px solid var(--line);padding:clamp(1.6rem,3vw,2.8rem) 0;cursor:pointer;overflow:hidden}
-  .pk-item .pk-row{display:flex;align-items:baseline;gap:1.6rem;position:relative;z-index:2;transition:transform .6s var(--ease),color .5s}
-  .pk-item .pk-no{font-size:.8rem;letter-spacing:.16em;color:var(--ink-soft);min-width:3ch}
-  .pk-item .pk-name{font-family:'Lora',serif;font-size:clamp(1.6rem,4vw,3.2rem);line-height:1;flex:1}
+  .pk-item{position:relative;border-bottom:1px solid var(--line);padding:clamp(1.6rem,3vw,2.8rem) clamp(1.4rem,4vw,3rem);cursor:pointer;overflow:hidden}
+  .pk-item .pk-row{display:flex;justify-content:space-between;align-items:flex-end;gap:1.6rem;position:relative;z-index:2;transition:transform .6s var(--ease),color .5s}
+  .pk-item .pk-main{display:flex;flex-direction:column;gap:.6rem}
+  .pk-item .pk-no{font-size:.8rem;letter-spacing:.16em;color:var(--ink-soft)}
+  .pk-item .pk-name{font-family:'Lora',serif;font-size:clamp(1.6rem,4vw,3.2rem);line-height:1}
   .pk-item .pk-tag{font-size:.82rem;color:var(--ink-soft);max-width:30ch;text-align:right;display:none}
   @media(min-width:900px){.pk-item .pk-tag{display:block}}
   .pk-item .pk-fill{position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .6s var(--ease);z-index:1}
   .pk-item:hover .pk-fill{transform:translateY(0)}
-  .pk-item:hover .pk-row{color:var(--cream);transform:translateX(18px)}
+  .pk-item:hover .pk-row{color:var(--cream)}
   .pk-item:hover .pk-no,.pk-item:hover .pk-tag{color:rgba(244,238,227,.7)}
   .pk-item .pk-detail{max-height:0;overflow:hidden;transition:max-height .6s var(--ease),opacity .5s;opacity:0;position:relative;z-index:2}
   .pk-item.open .pk-detail{max-height:340px;opacity:1;padding-top:1.6rem}
@@ -326,8 +328,10 @@
       <div class="pk-item" data-cursor data-cursor-label="open">
         <div class="pk-fill"></div>
         <div class="pk-row">
-          <span class="pk-no">01</span>
-          <span class="pk-name">Creative Direction</span>
+          <div class="pk-main">
+            <span class="pk-no">01</span>
+            <span class="pk-name">Creative Direction</span>
+          </div>
           <span class="pk-tag">For brands that have evolved, but aren't yet in focus.</span>
         </div>
         <div class="pk-detail">
@@ -339,8 +343,10 @@
       <div class="pk-item" data-cursor data-cursor-label="open">
         <div class="pk-fill"></div>
         <div class="pk-row">
-          <span class="pk-no">02</span>
-          <span class="pk-name">Brand Identity &amp; Visual World</span>
+          <div class="pk-main">
+            <span class="pk-no">02</span>
+            <span class="pk-name">Brand Identity &amp; Visual World</span>
+          </div>
           <span class="pk-tag">Bringing your brand into its best light.</span>
         </div>
         <div class="pk-detail">
@@ -352,8 +358,10 @@
       <div class="pk-item" data-cursor data-cursor-label="open">
         <div class="pk-fill"></div>
         <div class="pk-row">
-          <span class="pk-no">03</span>
-          <span class="pk-name">Content &amp; Campaign Direction</span>
+          <div class="pk-main">
+            <span class="pk-no">03</span>
+            <span class="pk-name">Content &amp; Campaign Direction</span>
+          </div>
           <span class="pk-tag">Content with purpose, not just volume.</span>
         </div>
         <div class="pk-detail">
@@ -365,8 +373,10 @@
       <div class="pk-item" data-cursor data-cursor-label="open">
         <div class="pk-fill"></div>
         <div class="pk-row">
-          <span class="pk-no">04</span>
-          <span class="pk-name">Ongoing Creative Partnership</span>
+          <div class="pk-main">
+            <span class="pk-no">04</span>
+            <span class="pk-name">Ongoing Creative Partnership</span>
+          </div>
           <span class="pk-tag">A trusted creative partner in your corner.</span>
         </div>
         <div class="pk-detail">
