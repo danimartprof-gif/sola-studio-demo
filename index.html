@@ -418,12 +418,20 @@
 </div>
 
 <script>
-  /* ---- apply CMS overrides saved from the admin panel (demo, localStorage) ---- */
-  (function(){try{
-    const cms=JSON.parse(localStorage.getItem('sola_cms')||'{}');
+  /* ---- live content from the CMS (Supabase) ---- */
+  const SUPA_URL='https://supabasekong-wckks4gsg8owkososoo8sosg.128.140.44.162.sslip.io';
+  const SUPA_KEY='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdXBhYmFzZSIsImlhdCI6MTc2ODkwNjQ0MCwiZXhwIjo0OTI0NTgwMDQwLCJyb2xlIjoiYW5vbiJ9.aePQztzDdhmgXjPlJ9zxh4_Qf5ex7Au7UyEiF_jzXK0';
+  function applyCMS(cms){
+    if(!cms)return;
     if(cms.accent){document.documentElement.style.setProperty('--gold',cms.accent);document.documentElement.style.setProperty('--yellow',cms.accent);}
     document.querySelectorAll('[data-cms]').forEach(el=>{const k=el.dataset.cms;if(cms[k]!=null&&cms[k]!=='')el.textContent=cms[k];});
-  }catch(e){}})();
+  }
+  (async function(){
+    try{
+      const r=await fetch(`${SUPA_URL}/rest/v1/sola_cms?id=eq.site&select=data`,{headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY}});
+      const j=await r.json(); applyCMS(j&&j[0]&&j[0].data);
+    }catch(e){ try{applyCMS(JSON.parse(localStorage.getItem('sola_cms')||'{}'))}catch(_){} }
+  })();
 
   /* ---- loader intro ---- */
   window.addEventListener('load',()=>{

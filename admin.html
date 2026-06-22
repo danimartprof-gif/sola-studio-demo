@@ -123,12 +123,14 @@
   </div>
 
   <div class="note">
-    <b>About this demo:</b> changes here are stored in your browser to show how the editor works. In the final version, this admin panel connects to your live website through a secure content system (CMS) — so edits are saved permanently and visible to <b>everyone</b>, from any device, with private logins for each admin. No bot or code needed.
+    <b>Live CMS:</b> your changes are saved to a secure database and published to the website for <b>everyone</b> to see, from any device — no bot or code needed. Editing is protected by your admin password (public visitors can only read). In the full version we'll add private logins per admin, plus image uploads and more editable sections.
   </div>
 </main>
 
 <script>
-  const KEY='sola_cms';
+  const SUPA_URL='https://supabasekong-wckks4gsg8owkososoo8sosg.128.140.44.162.sslip.io';
+  const SUPA_KEY='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdXBhYmFzZSIsImlhdCI6MTc2ODkwNjQ0MCwiZXhwIjo0OTI0NTgwMDQwLCJyb2xlIjoiYW5vbiJ9.aePQztzDdhmgXjPlJ9zxh4_Qf5ex7Au7UyEiF_jzXK0';
+  const SUPA_H={apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json'};
   const FIELDS=['heroTagline','p1Title','p1Concept','p1Desc','p2Title','p2Concept','p2Desc'];
   const DEFAULTS={
     accent:'#ddba6a',
@@ -138,29 +140,44 @@
     p2Title:'Nirjhara',p2Concept:'A Day Well Lived',
     p2Desc:"A cinematic content library for an award-winning Bali wellness retreat, capturing stillness, ritual and sense of place. 20 edited images and 3 short-form reels designed to let guests feel Nirjhara long before they arrive."
   };
+  let adminPass=sessionStorage.getItem('sola_admin_pass')||'';
 
   function login(){
     const v=document.getElementById('pw').value.trim();
-    if(v==='sola2026'){sessionStorage.setItem('sola_admin','1');document.getElementById('gate').style.display='none';loadData();}
+    if(v==='sola2026'){adminPass=v;sessionStorage.setItem('sola_admin','1');sessionStorage.setItem('sola_admin_pass',v);document.getElementById('gate').style.display='none';loadData();}
     else{document.getElementById('err').textContent='Incorrect password';}
   }
   document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
   if(sessionStorage.getItem('sola_admin')==='1'){document.getElementById('gate').style.display='none';}
 
-  function current(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
   function setColor(c){document.getElementById('accent').value=c;}
-  function loadData(){
-    const d=Object.assign({},DEFAULTS,current());
+  function fill(d){
     document.getElementById('accent').value=d.accent||DEFAULTS.accent;
-    FIELDS.forEach(f=>{const el=document.getElementById(f);if(el)el.value=d[f]||'';});
+    FIELDS.forEach(f=>{const el=document.getElementById(f);if(el)el.value=(d[f]!=null&&d[f]!=='')?d[f]:'';});
   }
-  function save(){
+  async function loadData(){
+    let saved={};
+    try{
+      const r=await fetch(`${SUPA_URL}/rest/v1/sola_cms?id=eq.site&select=data`,{headers:SUPA_H});
+      const j=await r.json(); if(j&&j[0]&&j[0].data) saved=j[0].data;
+    }catch(e){}
+    fill(Object.assign({},DEFAULTS,saved));
+  }
+  function flash(msg){const s=document.getElementById('saved');s.textContent=msg;s.classList.add('show');setTimeout(()=>{s.classList.remove('show');s.textContent='✓ Saved';},2600);}
+  async function save(){
     const d={accent:document.getElementById('accent').value};
     FIELDS.forEach(f=>{d[f]=document.getElementById(f).value;});
-    localStorage.setItem(KEY,JSON.stringify(d));
-    const s=document.getElementById('saved');s.classList.add('show');setTimeout(()=>s.classList.remove('show'),2200);
+    try{
+      const r=await fetch(`${SUPA_URL}/rest/v1/rpc/sola_cms_save`,{method:'POST',headers:SUPA_H,body:JSON.stringify({p_pass:adminPass||'sola2026',p_data:d})});
+      if(r.ok){try{localStorage.setItem('sola_cms',JSON.stringify(d));}catch(_){} flash('✓ Saved & published');}
+      else{flash('✗ Save failed');}
+    }catch(e){flash('✗ Network error');}
   }
-  function reset(){localStorage.removeItem(KEY);loadData();const s=document.getElementById('saved');s.textContent='✓ Reset';s.classList.add('show');setTimeout(()=>{s.classList.remove('show');s.textContent='✓ Saved';},2200);}
+  async function reset(){
+    try{await fetch(`${SUPA_URL}/rest/v1/rpc/sola_cms_save`,{method:'POST',headers:SUPA_H,body:JSON.stringify({p_pass:adminPass||'sola2026',p_data:{}})});}catch(e){}
+    try{localStorage.removeItem('sola_cms');}catch(_){}
+    fill(DEFAULTS);flash('✓ Reset');
+  }
 
   loadData();
 </script>
