@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>SOLA · Admin (Demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f5efe6;--cream-2:#e6d8c8;--ink:#29211f;--ink-soft:#6b5e57;
+    --gold:#ddba6a;--blush:#d9afa3;--line:rgba(41,33,31,.16);--ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--cream);color:var(--ink);font-family:'Manrope',sans-serif;font-weight:300;line-height:1.5;min-height:100vh}
+  .serif{font-family:'Lora',serif}
+  a{color:var(--gold);text-decoration:none}
+  .wrap{max-width:900px;margin:0 auto;padding:clamp(1.4rem,4vw,3rem)}
+
+  /* login */
+  #gate{position:fixed;inset:0;background:var(--ink);color:var(--cream);display:flex;align-items:center;justify-content:center;z-index:50}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate h1{font-family:'Lora',serif;font-weight:400;font-size:2.4rem;margin-bottom:.4rem;letter-spacing:.04em}
+  #gate p{opacity:.7;font-size:.85rem;margin-bottom:2rem}
+  #gate input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(245,239,230,.3);color:var(--cream);padding:.8rem 0;font-size:1.1rem;text-align:center;letter-spacing:.2em}
+  #gate input:focus{outline:none;border-color:var(--gold)}
+  #gate button{margin-top:1.6rem;background:var(--gold);color:var(--ink);border:none;padding:.85rem 2rem;border-radius:50px;font-family:'Lora',serif;font-style:italic;font-size:1.05rem;cursor:pointer}
+  #gate .hint{margin-top:1.4rem;font-size:.72rem;opacity:.5}
+  #gate .err{color:var(--blush);font-size:.8rem;margin-top:1rem;height:1rem}
+
+  /* panel */
+  header.bar{border-bottom:1px solid var(--line);background:var(--cream)}
+  header.bar .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:1.2rem;padding-bottom:1.2rem}
+  header.bar .logo{font-family:'Lora',serif;font-size:1.4rem;letter-spacing:.3em}
+  header.bar .tag{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
+  .lead{font-family:'Lora',serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:400;margin:2.2rem 0 .4rem}
+  .sub{color:var(--ink-soft);max-width:60ch;margin-bottom:2.4rem;font-size:.98rem}
+  .card{background:#fffdf9;border:1px solid var(--line);border-radius:14px;padding:1.6rem;margin-bottom:1.4rem}
+  .card h2{font-family:'Lora',serif;font-weight:500;font-size:1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
+  .card h2 .n{font-size:.7rem;background:var(--cream-2);color:var(--ink-soft);padding:.2rem .6rem;border-radius:50px;letter-spacing:.1em}
+  label{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:1rem 0 .4rem}
+  input[type=text],textarea{width:100%;background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:.8rem .9rem;font-family:'Manrope';font-size:.98rem;color:var(--ink);resize:vertical}
+  input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+  .color-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+  .color-row input[type=color]{width:54px;height:40px;border:1px solid var(--line);border-radius:8px;background:none;cursor:pointer}
+  .swatches{display:flex;gap:.5rem;flex-wrap:wrap}
+  .swatches button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);cursor:pointer}
+  .actions{position:sticky;bottom:0;background:linear-gradient(transparent,var(--cream) 30%);padding:1.4rem 0;display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+  .btn{border:none;border-radius:50px;padding:.9rem 1.8rem;font-family:'Lora',serif;font-style:italic;font-size:1.05rem;cursor:pointer}
+  .btn-primary{background:var(--ink);color:var(--cream)}
+  .btn-ghost{background:none;border:1px solid var(--line);color:var(--ink)}
+  .saved{color:var(--ink-soft);font-size:.85rem;opacity:0;transition:opacity .3s}
+  .saved.show{opacity:1}
+  .note{font-size:.8rem;color:var(--ink-soft);background:var(--cream-2);border-radius:10px;padding:1rem 1.2rem;margin-top:1.6rem;line-height:1.6}
+  .note b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <h1 class="serif">SOLA</h1>
+    <p>Admin access — content editor</p>
+    <input id="pw" type="password" placeholder="• • • • • •" autocomplete="off"/>
+    <div class="err" id="err"></div>
+    <button onclick="login()">Enter studio</button>
+    <div class="hint">Demo password: <b>sola2026</b></div>
+  </div>
+</div>
+
+<header class="bar">
+  <div class="wrap">
+    <span class="logo">SOLA</span>
+    <span class="tag">Content editor · Demo</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="lead serif">Edit your website</p>
+  <p class="sub">Make changes to your site without touching any code — update text, swap your accent colour and refine your project stories. Click <b>Save &amp; publish</b> and open the site to see them live.</p>
+
+  <div class="card">
+    <h2><span class="n">A</span> Brand colour</h2>
+    <label>Accent / "Golden Hour"</label>
+    <div class="color-row">
+      <input type="color" id="accent" value="#ddba6a"/>
+      <div class="swatches">
+        <button style="background:#ddba6a" onclick="setColor('#ddba6a')" title="Golden Hour"></button>
+        <button style="background:#d9afa3" onclick="setColor('#d9afa3')" title="Sun Blush"></button>
+        <button style="background:#e6d8c8" onclick="setColor('#e6d8c8')" title="Soft Sand"></button>
+        <button style="background:#c79a4b" onclick="setColor('#c79a4b')" title="Deep gold"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">B</span> Homepage</h2>
+    <label>Hero tagline</label>
+    <textarea id="heroTagline" rows="2"></textarea>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">C</span> Project 01</h2>
+    <label>Title</label><input type="text" id="p1Title"/>
+    <label>Concept</label><input type="text" id="p1Concept"/>
+    <label>Description</label><textarea id="p1Desc" rows="4"></textarea>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">D</span> Project 02</h2>
+    <label>Title</label><input type="text" id="p2Title"/>
+    <label>Concept</label><input type="text" id="p2Concept"/>
+    <label>Description</label><textarea id="p2Desc" rows="4"></textarea>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-primary" onclick="save()">Save &amp; publish</button>
+    <a class="btn btn-ghost" href="index.html" target="_blank">Open site ↗</a>
+    <button class="btn btn-ghost" onclick="reset()">Reset to defaults</button>
+    <span class="saved" id="saved">✓ Saved</span>
+  </div>
+
+  <div class="note">
+    <b>About this demo:</b> changes here are stored in your browser to show how the editor works. In the final version, this admin panel connects to your live website through a secure content system (CMS) — so edits are saved permanently and visible to <b>everyone</b>, from any device, with private logins for each admin. No bot or code needed.
+  </div>
+</main>
+
+<script>
+  const KEY='sola_cms';
+  const FIELDS=['heroTagline','p1Title','p1Concept','p1Desc','p2Title','p2Concept','p2Desc'];
+  const DEFAULTS={
+    accent:'#ddba6a',
+    heroTagline:"Your brand, in its best light. A creative studio for lifestyle, wellness & hospitality brands worth slowing down for.",
+    p1Title:'Sensei the Label',p1Concept:'Quiet Power',
+    p1Desc:"A visual exploration of feminine strength expressed through softness, presence and restraint. We translated the brand's values into an emotional visual world — strength without aggression, femininity without fragility, luxury without excess.",
+    p2Title:'Nirjhara',p2Concept:'A Day Well Lived',
+    p2Desc:"A cinematic content library for an award-winning Bali wellness retreat, capturing stillness, ritual and sense of place. 20 edited images and 3 short-form reels designed to let guests feel Nirjhara long before they arrive."
+  };
+
+  function login(){
+    const v=document.getElementById('pw').value.trim();
+    if(v==='sola2026'){sessionStorage.setItem('sola_admin','1');document.getElementById('gate').style.display='none';loadData();}
+    else{document.getElementById('err').textContent='Incorrect password';}
+  }
+  document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+  if(sessionStorage.getItem('sola_admin')==='1'){document.getElementById('gate').style.display='none';}
+
+  function current(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
+  function setColor(c){document.getElementById('accent').value=c;}
+  function loadData(){
+    const d=Object.assign({},DEFAULTS,current());
+    document.getElementById('accent').value=d.accent||DEFAULTS.accent;
+    FIELDS.forEach(f=>{const el=document.getElementById(f);if(el)el.value=d[f]||'';});
+  }
+  function save(){
+    const d={accent:document.getElementById('accent').value};
+    FIELDS.forEach(f=>{d[f]=document.getElementById(f).value;});
+    localStorage.setItem(KEY,JSON.stringify(d));
+    const s=document.getElementById('saved');s.classList.add('show');setTimeout(()=>s.classList.remove('show'),2200);
+  }
+  function reset(){localStorage.removeItem(KEY);loadData();const s=document.getElementById('saved');s.textContent='✓ Reset';s.classList.add('show');setTimeout(()=>{s.classList.remove('show');s.textContent='✓ Saved';},2200);}
+
+  loadData();
+</script>
+</body>
+</html>
