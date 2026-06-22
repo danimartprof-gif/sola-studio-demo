@@ -50,7 +50,10 @@
     position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:9999;
     transform:translate(-50%,-50%);mix-blend-mode:normal;
   }
-  .cursor-dot{width:7px;height:7px;background:var(--yellow)}
+  .cursor-dot{display:none}
+  @media (hover:hover) and (pointer:fine){
+    html,body,a,button,input,textarea,select,label,.pk-item,[data-cursor]{cursor:none !important}
+  }
   .cursor-ring{
     width:46px;height:46px;border:1.5px solid var(--yellow);
     transition:width .35s var(--ease),height .35s var(--ease),background .35s var(--ease),opacity .3s;
@@ -396,7 +399,7 @@
   const dot=document.querySelector('.cursor-dot'),ring=document.querySelector('.cursor-ring'),lbl=ring.querySelector('.label');
   let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
-  (function loop(){rx+=(mx-rx)*.16;ry+=(my-ry)*.16;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop)})();
+  (function loop(){rx+=(mx-rx)*.32;ry+=(my-ry)*.32;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop)})();
   document.querySelectorAll('[data-cursor]').forEach(el=>{
     el.addEventListener('mouseenter',()=>{ring.classList.add('is-hover');lbl.textContent=el.dataset.cursorLabel||''});
     el.addEventListener('mouseleave',()=>ring.classList.remove('is-hover'));
