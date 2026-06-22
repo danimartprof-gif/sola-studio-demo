@@ -4,25 +4,26 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="robots" content="noindex, nofollow" />
-<title>SOLA · Admin (Demo)</title>
+<title>SOLA · Studio Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --cream:#f5efe6;--cream-2:#e6d8c8;--ink:#29211f;--ink-soft:#6b5e57;
-    --gold:#ddba6a;--blush:#d9afa3;--line:rgba(41,33,31,.16);--ease:cubic-bezier(.16,1,.3,1);
+    --gold:#ddba6a;--blush:#d9afa3;--line:rgba(41,33,31,.14);--ok:#5d8a6a;--ease:cubic-bezier(.16,1,.3,1);
+    --panel:#fffdf9;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--cream);color:var(--ink);font-family:'Manrope',sans-serif;font-weight:300;line-height:1.5;min-height:100vh}
+  body{background:var(--cream);color:var(--ink);font-family:'Manrope',sans-serif;font-weight:300;line-height:1.5}
   .serif{font-family:'Lora',serif}
   a{color:var(--gold);text-decoration:none}
-  .wrap{max-width:900px;margin:0 auto;padding:clamp(1.4rem,4vw,3rem)}
+  button{font-family:'Manrope',sans-serif}
 
   /* login */
-  #gate{position:fixed;inset:0;background:var(--ink);color:var(--cream);display:flex;align-items:center;justify-content:center;z-index:50}
+  #gate{position:fixed;inset:0;background:var(--ink);color:var(--cream);display:flex;align-items:center;justify-content:center;z-index:100}
   #gate .box{width:min(92vw,380px);text-align:center}
-  #gate h1{font-family:'Lora',serif;font-weight:400;font-size:2.4rem;margin-bottom:.4rem;letter-spacing:.04em}
+  #gate h1{font-family:'Lora',serif;font-weight:400;font-size:2.6rem;margin-bottom:.4rem;letter-spacing:.06em}
   #gate p{opacity:.7;font-size:.85rem;margin-bottom:2rem}
   #gate input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(245,239,230,.3);color:var(--cream);padding:.8rem 0;font-size:1.1rem;text-align:center;letter-spacing:.2em}
   #gate input:focus{outline:none;border-color:var(--gold)}
@@ -30,31 +31,71 @@
   #gate .hint{margin-top:1.4rem;font-size:.72rem;opacity:.5}
   #gate .err{color:var(--blush);font-size:.8rem;margin-top:1rem;height:1rem}
 
-  /* panel */
-  header.bar{border-bottom:1px solid var(--line);background:var(--cream)}
-  header.bar .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:1.2rem;padding-bottom:1.2rem}
-  header.bar .logo{font-family:'Lora',serif;font-size:1.4rem;letter-spacing:.3em}
-  header.bar .tag{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
-  .lead{font-family:'Lora',serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:400;margin:2.2rem 0 .4rem}
-  .sub{color:var(--ink-soft);max-width:60ch;margin-bottom:2.4rem;font-size:.98rem}
-  .card{background:#fffdf9;border:1px solid var(--line);border-radius:14px;padding:1.6rem;margin-bottom:1.4rem}
-  .card h2{font-family:'Lora',serif;font-weight:500;font-size:1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
-  .card h2 .n{font-size:.7rem;background:var(--cream-2);color:var(--ink-soft);padding:.2rem .6rem;border-radius:50px;letter-spacing:.1em}
+  /* shell */
+  .shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+  aside{background:var(--ink);color:var(--cream);padding:1.6rem 1rem;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+  aside .logo{font-family:'Lora',serif;font-size:1.5rem;letter-spacing:.3em;padding:.4rem .8rem 1.6rem}
+  aside nav{display:flex;flex-direction:column;gap:.2rem}
+  aside nav a{color:rgba(245,239,230,.75);padding:.7rem .9rem;border-radius:10px;font-size:.9rem;cursor:pointer;display:flex;align-items:center;gap:.7rem;transition:.2s}
+  aside nav a:hover{background:rgba(245,239,230,.08);color:var(--cream)}
+  aside nav a.active{background:var(--gold);color:var(--ink);font-weight:500}
+  aside .foot{margin-top:auto;font-size:.7rem;color:rgba(245,239,230,.45);padding:.8rem;line-height:1.6}
+  aside .ico{width:16px;text-align:center}
+
+  main{padding:clamp(1.4rem,3vw,2.6rem);max-width:1000px}
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+  .top h1{font-family:'Lora',serif;font-weight:500;font-size:clamp(1.6rem,4vw,2.3rem)}
+  .top .actions{display:flex;gap:.8rem;align-items:center}
+  .btn{border:none;border-radius:50px;padding:.7rem 1.4rem;font-size:.85rem;cursor:pointer}
+  .btn-primary{background:var(--ink);color:var(--cream)}
+  .btn-ghost{background:none;border:1px solid var(--line);color:var(--ink)}
+  .saved{color:var(--ok);font-size:.85rem;opacity:0;transition:opacity .3s}
+  .saved.show{opacity:1}
+
+  section.view{display:none}
+  section.view.active{display:block;animation:fade .4s var(--ease)}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.6rem;margin-bottom:1.4rem}
+  .card h2{font-family:'Lora',serif;font-weight:500;font-size:1.15rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
+  .card h2 .n{font-size:.66rem;background:var(--cream-2);color:var(--ink-soft);padding:.2rem .6rem;border-radius:50px;letter-spacing:.1em}
   label{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:1rem 0 .4rem}
-  input[type=text],textarea{width:100%;background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:.8rem .9rem;font-family:'Manrope';font-size:.98rem;color:var(--ink);resize:vertical}
+  input[type=text],textarea{width:100%;background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:.8rem .9rem;font-family:'Manrope';font-size:.96rem;color:var(--ink);resize:vertical}
   input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+  .hintline{font-size:.74rem;color:var(--ink-soft);margin-top:.3rem}
   .color-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
   .color-row input[type=color]{width:54px;height:40px;border:1px solid var(--line);border-radius:8px;background:none;cursor:pointer}
   .swatches{display:flex;gap:.5rem;flex-wrap:wrap}
   .swatches button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);cursor:pointer}
-  .actions{position:sticky;bottom:0;background:linear-gradient(transparent,var(--cream) 30%);padding:1.4rem 0;display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
-  .btn{border:none;border-radius:50px;padding:.9rem 1.8rem;font-family:'Lora',serif;font-style:italic;font-size:1.05rem;cursor:pointer}
-  .btn-primary{background:var(--ink);color:var(--cream)}
-  .btn-ghost{background:none;border:1px solid var(--line);color:var(--ink)}
-  .saved{color:var(--ink-soft);font-size:.85rem;opacity:0;transition:opacity .3s}
-  .saved.show{opacity:1}
-  .note{font-size:.8rem;color:var(--ink-soft);background:var(--cream-2);border-radius:10px;padding:1rem 1.2rem;margin-top:1.6rem;line-height:1.6}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.4rem}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.3rem}
+  .kpi .v{font-family:'Lora',serif;font-size:2rem;line-height:1}
+  .kpi .l{font-size:.74rem;color:var(--ink-soft);margin-top:.4rem;letter-spacing:.04em}
+  .kpi .d{font-size:.72rem;color:var(--ok);margin-top:.3rem}
+  .muted-tag{display:inline-block;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;background:var(--cream-2);color:var(--ink-soft);padding:.25rem .6rem;border-radius:50px;margin-left:.5rem}
+
+  .serp{background:#fff;border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem}
+  .serp .u{color:#5f6368;font-size:.78rem}
+  .serp .t{color:#1a0dab;font-size:1.15rem;margin:.2rem 0}
+  .serp .d{color:#4d5156;font-size:.85rem}
+
+  .check{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+  .check li{display:flex;align-items:center;gap:.6rem;font-size:.9rem;color:var(--ink-soft)}
+  .check li b{color:var(--ink);font-weight:500}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--ok);flex:none}
+  .dot.warn{background:var(--gold)}
+
+  table{width:100%;border-collapse:collapse;font-size:.88rem}
+  th,td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line)}
+  th{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
+  .pill{font-size:.7rem;padding:.2rem .6rem;border-radius:50px;background:var(--cream-2);color:var(--ink-soft)}
+  .pill.live{background:rgba(93,138,106,.18);color:var(--ok)}
+
+  .note{font-size:.82rem;color:var(--ink-soft);background:var(--cream-2);border-radius:10px;padding:1rem 1.2rem;line-height:1.6}
   .note b{color:var(--ink)}
+  .soon{opacity:.85}
+  @media(max-width:760px){.shell{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center}aside .logo{padding:.4rem .8rem}aside nav{flex-direction:row;flex-wrap:wrap}aside .foot{display:none}}
 </style>
 </head>
 <body>
@@ -62,7 +103,7 @@
 <div id="gate">
   <div class="box">
     <h1 class="serif">SOLA</h1>
-    <p>Admin access — content editor</p>
+    <p>Studio dashboard — admin access</p>
     <input id="pw" type="password" placeholder="• • • • • •" autocomplete="off"/>
     <div class="err" id="err"></div>
     <button onclick="login()">Enter studio</button>
@@ -70,75 +111,195 @@
   </div>
 </div>
 
-<header class="bar">
-  <div class="wrap">
-    <span class="logo">SOLA</span>
-    <span class="tag">Content editor · Demo</span>
-  </div>
-</header>
+<div class="shell">
+  <aside>
+    <div class="logo">SOLA</div>
+    <nav>
+      <a data-view="dashboard" class="active"><span class="ico">◰</span> Dashboard</a>
+      <a data-view="content"><span class="ico">✎</span> Content</a>
+      <a data-view="seo"><span class="ico">⌕</span> SEO</a>
+      <a data-view="email"><span class="ico">✉</span> Email marketing</a>
+      <a data-view="analytics"><span class="ico">▤</span> Analytics</a>
+      <a data-view="settings"><span class="ico">⚙</span> Settings</a>
+    </nav>
+    <div class="foot">SOLA Studio Dashboard<br>by Stratoma AI · Demo</div>
+  </aside>
 
-<main class="wrap">
-  <p class="lead serif">Edit your website</p>
-  <p class="sub">Make changes to your site without touching any code — update text, swap your accent colour and refine your project stories. Click <b>Save &amp; publish</b> and open the site to see them live.</p>
-
-  <div class="card">
-    <h2><span class="n">A</span> Brand colour</h2>
-    <label>Accent / "Golden Hour"</label>
-    <div class="color-row">
-      <input type="color" id="accent" value="#ddba6a"/>
-      <div class="swatches">
-        <button style="background:#ddba6a" onclick="setColor('#ddba6a')" title="Golden Hour"></button>
-        <button style="background:#d9afa3" onclick="setColor('#d9afa3')" title="Sun Blush"></button>
-        <button style="background:#e6d8c8" onclick="setColor('#e6d8c8')" title="Soft Sand"></button>
-        <button style="background:#c79a4b" onclick="setColor('#c79a4b')" title="Deep gold"></button>
+  <main>
+    <div class="top">
+      <h1 id="viewTitle" class="serif">Dashboard</h1>
+      <div class="actions">
+        <span class="saved" id="saved">✓ Saved</span>
+        <a class="btn btn-ghost" href="index.html" target="_blank">View site ↗</a>
+        <button class="btn btn-primary" onclick="save()">Save &amp; publish</button>
       </div>
     </div>
-  </div>
 
-  <div class="card">
-    <h2><span class="n">B</span> Homepage</h2>
-    <label>Hero tagline</label>
-    <textarea id="heroTagline" rows="2"></textarea>
-  </div>
+    <!-- DASHBOARD -->
+    <section class="view active" id="dashboard">
+      <div class="kpis">
+        <div class="kpi"><div class="v">1,248</div><div class="l">Visitors · 30d</div><div class="d">▲ 18%</div></div>
+        <div class="kpi"><div class="v">86</div><div class="l">Newsletter subscribers</div><div class="d">▲ 12 new</div></div>
+        <div class="kpi"><div class="v">9</div><div class="l">Enquiries · 30d</div><div class="d">▲ 3</div></div>
+        <div class="kpi"><div class="v">92</div><div class="l">SEO score</div><div class="d">Good</div></div>
+      </div>
+      <div class="card">
+        <h2>Welcome back ✦</h2>
+        <p style="color:var(--ink-soft);max-width:60ch">This is your studio control centre. Edit your website content, manage SEO, send email campaigns and track performance — all in one place, no code or bot needed.</p>
+        <p class="note soon" style="margin-top:1.2rem">Sample figures shown for the demo. In the full version these connect to your live Google Analytics, your email tool and your real enquiry inbox.</p>
+      </div>
+    </section>
 
-  <div class="card">
-    <h2><span class="n">C</span> Project 01</h2>
-    <label>Title</label><input type="text" id="p1Title"/>
-    <label>Concept</label><input type="text" id="p1Concept"/>
-    <label>Description</label><textarea id="p1Desc" rows="4"></textarea>
-  </div>
+    <!-- CONTENT -->
+    <section class="view" id="content">
+      <div class="card">
+        <h2><span class="n">A</span> Brand colour</h2>
+        <label>Accent / "Golden Hour"</label>
+        <div class="color-row">
+          <input type="color" id="accent" value="#ddba6a"/>
+          <div class="swatches">
+            <button style="background:#ddba6a" onclick="setColor('#ddba6a')" title="Golden Hour"></button>
+            <button style="background:#d9afa3" onclick="setColor('#d9afa3')" title="Sun Blush"></button>
+            <button style="background:#e6d8c8" onclick="setColor('#e6d8c8')" title="Soft Sand"></button>
+            <button style="background:#c79a4b" onclick="setColor('#c79a4b')" title="Deep gold"></button>
+          </div>
+        </div>
+        <p class="hintline">Tip: you can also edit text directly on the website — open the site and click <b>✎ Edit page</b>.</p>
+      </div>
+      <div class="card">
+        <h2><span class="n">B</span> Homepage</h2>
+        <label>Hero tagline</label>
+        <textarea id="heroTagline" rows="2"></textarea>
+      </div>
+      <div class="card">
+        <h2><span class="n">C</span> Project 01</h2>
+        <label>Title</label><input type="text" id="p1Title"/>
+        <label>Concept</label><input type="text" id="p1Concept"/>
+        <label>Description</label><textarea id="p1Desc" rows="4"></textarea>
+      </div>
+      <div class="card">
+        <h2><span class="n">D</span> Project 02</h2>
+        <label>Title</label><input type="text" id="p2Title"/>
+        <label>Concept</label><input type="text" id="p2Concept"/>
+        <label>Description</label><textarea id="p2Desc" rows="4"></textarea>
+      </div>
+    </section>
 
-  <div class="card">
-    <h2><span class="n">D</span> Project 02</h2>
-    <label>Title</label><input type="text" id="p2Title"/>
-    <label>Concept</label><input type="text" id="p2Concept"/>
-    <label>Description</label><textarea id="p2Desc" rows="4"></textarea>
-  </div>
+    <!-- SEO -->
+    <section class="view" id="seo">
+      <div class="card">
+        <h2><span class="n">⌕</span> Search engine settings</h2>
+        <label>Page title (meta title)</label>
+        <input type="text" id="seoTitle" oninput="serp()"/>
+        <p class="hintline">Recommended ≤ 60 characters. <span id="seoTitleLen"></span></p>
+        <label>Meta description</label>
+        <textarea id="seoDescription" rows="3" oninput="serp()"></textarea>
+        <p class="hintline">Recommended ≤ 155 characters. <span id="seoDescLen"></span></p>
+        <label>Keywords</label>
+        <input type="text" id="seoKeywords" placeholder="brand strategy, creative direction, Bali, wellness branding"/>
+        <p class="hintline">These are saved to your live site when you press Save &amp; publish.</p>
+      </div>
+      <div class="card">
+        <h2>Google preview</h2>
+        <div class="serp">
+          <div class="u">www.thesola.studio</div>
+          <div class="t serif" id="serpT">SOLA — Your brand, in its best light</div>
+          <div class="d" id="serpD">SOLA is a creative studio specialising in brand strategy, creative direction and storytelling.</div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>SEO checklist</h2>
+        <ul class="check">
+          <li><span class="dot"></span><b>Title &amp; description</b> set</li>
+          <li><span class="dot"></span><b>Mobile-friendly</b> &amp; responsive</li>
+          <li><span class="dot"></span><b>Fast loading</b> (optimised images &amp; fonts)</li>
+          <li><span class="dot warn"></span><b>Connect Google Search Console</b> <span class="muted-tag">full version</span></li>
+          <li><span class="dot warn"></span><b>Sitemap &amp; structured data</b> <span class="muted-tag">full version</span></li>
+        </ul>
+      </div>
+    </section>
 
-  <div class="actions">
-    <button class="btn btn-primary" onclick="save()">Save &amp; publish</button>
-    <a class="btn btn-ghost" href="index.html" target="_blank">Open site ↗</a>
-    <button class="btn btn-ghost" onclick="reset()">Reset to defaults</button>
-    <span class="saved" id="saved">✓ Saved</span>
-  </div>
+    <!-- EMAIL -->
+    <section class="view" id="email">
+      <div class="kpis">
+        <div class="kpi"><div class="v">86</div><div class="l">Subscribers</div><div class="d">▲ 12 · 30d</div></div>
+        <div class="kpi"><div class="v">41%</div><div class="l">Avg. open rate</div></div>
+        <div class="kpi"><div class="v">3</div><div class="l">Campaigns sent</div></div>
+      </div>
+      <div class="card">
+        <h2>Campaigns <span class="muted-tag">demo</span></h2>
+        <table>
+          <tr><th>Campaign</th><th>Sent</th><th>Opens</th><th>Status</th></tr>
+          <tr><td>New chapter — Studio relaunch</td><td>2 Jun</td><td>44%</td><td><span class="pill live">Sent</span></td></tr>
+          <tr><td>Nirjhara · A Day Well Lived</td><td>19 May</td><td>39%</td><td><span class="pill live">Sent</span></td></tr>
+          <tr><td>Summer waitlist</td><td>—</td><td>—</td><td><span class="pill">Draft</span></td></tr>
+        </table>
+        <p style="margin-top:1.2rem"><button class="btn btn-ghost" onclick="alert('In the full version this opens the campaign composer connected to your email tool (Mailchimp / Brevo).')">+ New campaign</button></p>
+      </div>
+      <div class="card">
+        <h2>Audience capture</h2>
+        <p style="color:var(--ink-soft);max-width:62ch">Your website's contact &amp; newsletter forms feed subscribers straight into this list.</p>
+        <p class="note soon" style="margin-top:1rem">In the full version we connect this to <b>Mailchimp</b> or <b>Brevo</b> so you can send real campaigns, automations and welcome sequences. We set it up for you.</p>
+      </div>
+    </section>
 
-  <div class="note">
-    <b>Live CMS:</b> your changes are saved to a secure database and published to the website for <b>everyone</b> to see, from any device — no bot or code needed. Editing is protected by your admin password (public visitors can only read). In the full version we'll add private logins per admin, plus image uploads and more editable sections.
-  </div>
-</main>
+    <!-- ANALYTICS -->
+    <section class="view" id="analytics">
+      <div class="kpis">
+        <div class="kpi"><div class="v">1,248</div><div class="l">Visitors · 30d</div><div class="d">▲ 18%</div></div>
+        <div class="kpi"><div class="v">3,914</div><div class="l">Page views</div><div class="d">▲ 22%</div></div>
+        <div class="kpi"><div class="v">2m 41s</div><div class="l">Avg. time on site</div></div>
+        <div class="kpi"><div class="v">Instagram</div><div class="l">Top source</div></div>
+      </div>
+      <div class="card">
+        <h2>Top pages <span class="muted-tag">demo</span></h2>
+        <table>
+          <tr><th>Page</th><th>Views</th><th>Avg. time</th></tr>
+          <tr><td>Home</td><td>1,902</td><td>2m 10s</td></tr>
+          <tr><td>Selected work</td><td>1,103</td><td>3m 02s</td></tr>
+          <tr><td>Packages</td><td>624</td><td>1m 48s</td></tr>
+          <tr><td>Contact</td><td>285</td><td>1m 05s</td></tr>
+        </table>
+        <p class="note soon" style="margin-top:1.2rem">Connects to your real <b>Google Analytics</b> in the full version for live traffic, sources and conversions.</p>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="view" id="settings">
+      <div class="card">
+        <h2>Administrators</h2>
+        <table>
+          <tr><th>Name</th><th>Email</th><th>Role</th></tr>
+          <tr><td>Becks</td><td>becks@thesola.studio</td><td><span class="pill">Owner</span></td></tr>
+          <tr><td>Swan</td><td>swan@thesola.studio</td><td><span class="pill">Editor</span></td></tr>
+        </table>
+        <p class="note soon" style="margin-top:1.2rem">In the full version each admin gets a private, secure login (no shared password) and you can add or remove people here.</p>
+      </div>
+      <div class="card">
+        <h2>Reset</h2>
+        <p style="color:var(--ink-soft);margin-bottom:1rem">Restore all website content to the original defaults.</p>
+        <button class="btn btn-ghost" onclick="reset()">Reset to defaults</button>
+      </div>
+    </section>
+
+  </main>
+</div>
 
 <script>
   const SUPA_URL='https://supabasekong-wckks4gsg8owkososoo8sosg.128.140.44.162.sslip.io';
   const SUPA_KEY='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdXBhYmFzZSIsImlhdCI6MTc2ODkwNjQ0MCwiZXhwIjo0OTI0NTgwMDQwLCJyb2xlIjoiYW5vbiJ9.aePQztzDdhmgXjPlJ9zxh4_Qf5ex7Au7UyEiF_jzXK0';
   const SUPA_H={apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json'};
-  const FIELDS=['heroTagline','p1Title','p1Concept','p1Desc','p2Title','p2Concept','p2Desc'];
+  const FIELDS=['heroTagline','p1Title','p1Concept','p1Desc','p2Title','p2Concept','p2Desc','seoTitle','seoDescription','seoKeywords'];
   const DEFAULTS={
     accent:'#ddba6a',
     heroTagline:"Your brand, in its best light. A creative studio for lifestyle, wellness & hospitality brands worth slowing down for.",
     p1Title:'Sensei the Label',p1Concept:'Quiet Power',
     p1Desc:"A visual exploration of feminine strength expressed through softness, presence and restraint. We translated the brand's values into an emotional visual world — strength without aggression, femininity without fragility, luxury without excess.",
     p2Title:'Nirjhara',p2Concept:'A Day Well Lived',
-    p2Desc:"A cinematic content library for an award-winning Bali wellness retreat, capturing stillness, ritual and sense of place. 20 edited images and 3 short-form reels designed to let guests feel Nirjhara long before they arrive."
+    p2Desc:"A cinematic content library for an award-winning Bali wellness retreat, capturing stillness, ritual and sense of place. 20 edited images and 3 short-form reels designed to let guests feel Nirjhara long before they arrive.",
+    seoTitle:'SOLA — Your brand, in its best light',
+    seoDescription:'SOLA is a creative studio specialising in brand strategy, creative direction and storytelling for lifestyle, wellness and hospitality brands.',
+    seoKeywords:'brand strategy, creative direction, storytelling, wellness branding, hospitality branding, Bali'
   };
   let adminPass=sessionStorage.getItem('sola_admin_pass')||'';
 
@@ -150,10 +311,30 @@
   document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
   if(sessionStorage.getItem('sola_admin')==='1'){document.getElementById('gate').style.display='none';}
 
+  /* sidebar navigation */
+  document.querySelectorAll('aside nav a').forEach(a=>{
+    a.addEventListener('click',()=>{
+      document.querySelectorAll('aside nav a').forEach(x=>x.classList.remove('active'));
+      a.classList.add('active');
+      const v=a.dataset.view;
+      document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('active',s.id===v));
+      document.getElementById('viewTitle').textContent=a.textContent.trim();
+    });
+  });
+
   function setColor(c){document.getElementById('accent').value=c;}
+  function serp(){
+    const t=document.getElementById('seoTitle').value||DEFAULTS.seoTitle;
+    const d=document.getElementById('seoDescription').value||DEFAULTS.seoDescription;
+    document.getElementById('serpT').textContent=t;
+    document.getElementById('serpD').textContent=d;
+    document.getElementById('seoTitleLen').textContent=t.length+' chars';
+    document.getElementById('seoDescLen').textContent=d.length+' chars';
+  }
   function fill(d){
     document.getElementById('accent').value=d.accent||DEFAULTS.accent;
     FIELDS.forEach(f=>{const el=document.getElementById(f);if(el)el.value=(d[f]!=null&&d[f]!=='')?d[f]:'';});
+    serp();
   }
   async function loadData(){
     let saved={};
@@ -163,19 +344,17 @@
     }catch(e){}
     fill(Object.assign({},DEFAULTS,saved));
   }
-  function flash(msg){const s=document.getElementById('saved');s.textContent=msg;s.classList.add('show');setTimeout(()=>{s.classList.remove('show');s.textContent='✓ Saved';},2600);}
+  function flash(msg){const s=document.getElementById('saved');s.textContent=msg;s.classList.add('show');setTimeout(()=>{s.classList.remove('show');s.textContent='✓ Saved';},2800);}
   async function save(){
     const d={accent:document.getElementById('accent').value};
-    FIELDS.forEach(f=>{d[f]=document.getElementById(f).value;});
+    FIELDS.forEach(f=>{const el=document.getElementById(f);if(el)d[f]=el.value;});
     try{
       const r=await fetch(`${SUPA_URL}/rest/v1/rpc/sola_cms_save`,{method:'POST',headers:SUPA_H,body:JSON.stringify({p_pass:adminPass||'sola2026',p_data:d})});
-      if(r.ok){try{localStorage.setItem('sola_cms',JSON.stringify(d));}catch(_){} flash('✓ Saved & published');}
-      else{flash('✗ Save failed');}
+      flash(r.ok?'✓ Saved & published':'✗ Save failed');
     }catch(e){flash('✗ Network error');}
   }
   async function reset(){
     try{await fetch(`${SUPA_URL}/rest/v1/rpc/sola_cms_save`,{method:'POST',headers:SUPA_H,body:JSON.stringify({p_pass:adminPass||'sola2026',p_data:{}})});}catch(e){}
-    try{localStorage.removeItem('sola_cms');}catch(_){}
     fill(DEFAULTS);flash('✓ Reset');
   }
 

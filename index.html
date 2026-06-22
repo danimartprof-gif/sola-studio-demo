@@ -208,6 +208,24 @@
   .strato{position:fixed;bottom:16px;right:16px;z-index:940;background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:12px;padding:.5rem .7rem;font-size:.62rem;color:var(--ink-soft);line-height:1.5}
   .strato b{color:var(--ink)}
   .strato button{position:absolute;top:-7px;right:-7px;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:11px;line-height:1;color:var(--ink-soft)}
+
+  /* ---------- inline visual editor ---------- */
+  #editBtn{position:fixed;bottom:16px;left:16px;z-index:960;background:var(--ink);color:var(--cream);border:none;border-radius:50px;padding:.62rem 1.1rem;font-size:.72rem;letter-spacing:.1em;cursor:pointer;font-family:'Manrope',sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+  body.editing [data-cms]{outline:1.5px dashed var(--gold);outline-offset:5px;border-radius:2px}
+  body.editing [data-cms]:hover{background:rgba(221,186,106,.14)}
+  body.editing [data-cms]:focus{outline:2px solid var(--gold);background:rgba(221,186,106,.10)}
+  body.editing,body.editing *{cursor:auto !important}
+  body.editing .cursor-ring,body.editing #editBtn{display:none}
+  #editBar{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:961;background:var(--ink);color:var(--cream);border-radius:50px;padding:.5rem .6rem .5rem 1.3rem;display:none;align-items:center;gap:1rem;box-shadow:0 10px 34px rgba(0,0,0,.28);white-space:nowrap}
+  body.editing #editBar{display:flex}
+  #editBar .ttl{font-size:.72rem;letter-spacing:.08em;opacity:.85}
+  #editBar label{display:flex;align-items:center;gap:.5rem;font-size:.72rem}
+  #editBar input[type=color]{width:28px;height:28px;border:1px solid rgba(245,239,230,.3);border-radius:50%;background:none;cursor:pointer;padding:0}
+  #editBar button{border:none;border-radius:50px;padding:.55rem 1.1rem;font-size:.78rem;cursor:pointer;font-family:'Manrope',sans-serif}
+  #editBar .save{background:var(--gold);color:var(--ink);font-weight:500}
+  #editBar .cancel{background:transparent;color:var(--cream);border:1px solid rgba(245,239,230,.3)}
+  #editToast{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);z-index:962;background:var(--gold);color:var(--ink);padding:.6rem 1.2rem;border-radius:50px;font-size:.8rem;opacity:0;transition:opacity .3s;pointer-events:none}
+  #editToast.show{opacity:1}
 </style>
 </head>
 <body>
@@ -417,6 +435,15 @@
   <button onclick="this.parentElement.remove()" aria-label="close">×</button>
 </div>
 
+<button id="editBtn">✎ Edit page</button>
+<div id="editBar">
+  <span class="ttl">Editing — click any text to change it</span>
+  <label>Accent <input type="color" id="editAccent" value="#ddba6a"/></label>
+  <button class="save" id="editSave">Save &amp; publish</button>
+  <button class="cancel" id="editCancel">Cancel</button>
+</div>
+<div id="editToast"></div>
+
 <script>
   /* ---- live content from the CMS (Supabase) ---- */
   const SUPA_URL='https://supabasekong-wckks4gsg8owkososoo8sosg.128.140.44.162.sslip.io';
@@ -425,6 +452,8 @@
     if(!cms)return;
     if(cms.accent){document.documentElement.style.setProperty('--gold',cms.accent);document.documentElement.style.setProperty('--yellow',cms.accent);}
     document.querySelectorAll('[data-cms]').forEach(el=>{const k=el.dataset.cms;if(cms[k]!=null&&cms[k]!=='')el.textContent=cms[k];});
+    if(cms.seoTitle)document.title=cms.seoTitle;
+    if(cms.seoDescription){const m=document.querySelector('meta[name="description"]');if(m)m.setAttribute('content',cms.seoDescription);}
   }
   (async function(){
     try{
@@ -500,6 +529,37 @@
     const b=document.querySelector('form .submit');
     b.innerHTML='Thank you — we\'ll be in touch ✦';
   });
+
+  /* ---- inline visual editor (click text on the live site to edit) ---- */
+  (function(){
+    const btn=document.getElementById('editBtn'),accentI=document.getElementById('editAccent'),toast=document.getElementById('editToast');
+    let pass=null;
+    const hdr={apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json'};
+    function hex(){return (getComputedStyle(document.documentElement).getPropertyValue('--gold').trim())||'#ddba6a';}
+    function showToast(m){toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2600);}
+    btn.addEventListener('click',()=>{
+      const p=prompt('Enter the admin password to edit this page:');
+      if(p==null)return; pass=p;
+      document.body.classList.add('editing');
+      try{accentI.value=hex();}catch(e){}
+      document.querySelectorAll('[data-cms]').forEach(el=>{el.setAttribute('contenteditable','true');el.spellcheck=false;});
+      try{lenis.stop();}catch(e){}
+    });
+    accentI.addEventListener('input',()=>{document.documentElement.style.setProperty('--gold',accentI.value);document.documentElement.style.setProperty('--yellow',accentI.value);});
+    document.getElementById('editCancel').addEventListener('click',()=>location.reload());
+    document.getElementById('editSave').addEventListener('click',async()=>{
+      const d={accent:accentI.value};
+      document.querySelectorAll('[data-cms]').forEach(el=>{d[el.dataset.cms]=el.textContent.trim();});
+      let existing={};
+      try{const g=await fetch(`${SUPA_URL}/rest/v1/sola_cms?id=eq.site&select=data`,{headers:hdr});const j=await g.json();if(j&&j[0]&&j[0].data)existing=j[0].data;}catch(e){}
+      const merged=Object.assign({},existing,d);
+      try{
+        const r=await fetch(`${SUPA_URL}/rest/v1/rpc/sola_cms_save`,{method:'POST',headers:hdr,body:JSON.stringify({p_pass:pass,p_data:merged})});
+        if(r.ok){document.body.classList.remove('editing');document.querySelectorAll('[data-cms]').forEach(el=>el.removeAttribute('contenteditable'));try{lenis.start();}catch(e){}showToast('✓ Saved & published');}
+        else{showToast('✗ Wrong password');}
+      }catch(e){showToast('✗ Network error');}
+    });
+  })();
 </script>
 </body>
 </html>
