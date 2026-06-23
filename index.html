@@ -60,7 +60,7 @@
     width:24px;height:24px;border:none;background:var(--yellow);border-radius:50%;
     transition:width .35s var(--ease),height .35s var(--ease),opacity .3s;
   }
-  .cursor-ring.is-hover{width:54px;height:54px}
+  .cursor-ring.is-hover{width:66px;height:42px;border-radius:9px}
   .cursor-ring .label{display:none}
   @media (hover:none){.cursor-dot,.cursor-ring{display:none}}
 
@@ -205,6 +205,45 @@
   .strato b{color:var(--ink)}
   .strato button{position:absolute;top:-7px;right:-7px;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);background:var(--cream-2);cursor:pointer;font-size:11px;line-height:1;color:var(--ink)}
 
+  /* ---------- hero CTAs ---------- */
+  .hero-cta{display:flex;gap:1rem;margin-top:2.2rem;flex-wrap:wrap}
+  .btn-primary,.btn-ghost{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;padding:.95rem 1.7rem;border-radius:50px;transition:.3s var(--ease)}
+  .btn-primary{background:var(--gold);color:var(--cream)}
+  .btn-primary:hover{filter:brightness(1.08)}
+  .btn-ghost{border:1px solid var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+  /* ---------- packages includes ---------- */
+  .pk-incl{color:var(--cream);font-size:.95rem;margin:0 0 1.1rem;line-height:1.7;max-width:70ch}
+  .pk-incl b{color:rgba(244,238,227,.65);font-weight:500;letter-spacing:.1em;text-transform:uppercase;font-size:.68rem;display:block;margin-bottom:.35rem}
+  .pk-incl em{color:rgba(244,238,227,.75);font-style:italic}
+
+  /* ---------- about / founders ---------- */
+  .about{padding:var(--space) 0}
+  .about .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:center}
+  .about-media{aspect-ratio:7/5;overflow:hidden}
+  .about-media img{width:100%;height:100%;object-fit:cover}
+  .about h2{font-size:var(--text-h2);line-height:1.05;margin-bottom:1.4rem}
+  .about .eyebrow{margin-bottom:1.2rem}
+  .about p{color:var(--ink-soft);max-width:54ch;margin-bottom:1.1rem;font-size:1.04rem}
+  .bios{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.6rem,4vw,3rem);margin-top:clamp(2.6rem,6vw,5rem)}
+  .bio h3{font-family:'Lora',serif;font-size:1.5rem;margin-bottom:.15rem}
+  .bio .role{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.9rem}
+  .bio p{font-size:.95rem;color:var(--ink-soft);max-width:44ch}
+  @media(max-width:820px){.about .grid,.bios{grid-template-columns:1fr;gap:2rem}}
+
+  /* ---------- testimonial ---------- */
+  .testi{padding:var(--space) 0;text-align:center}
+  .testi blockquote{font-family:'Lora',serif;font-style:italic;font-size:clamp(1.5rem,3.4vw,2.6rem);line-height:1.3;max-width:26ch;margin:0 auto;color:var(--ink)}
+  .testi blockquote::before{content:'“';color:var(--gold)}
+  .testi blockquote::after{content:'”';color:var(--gold)}
+  .testi .cite{margin-top:1.8rem;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+
+  /* ---------- scattered gallery (editorial, not perfectly aligned) ---------- */
+  .gal figure:nth-child(1){transform:rotate(-1.8deg)}
+  .gal figure:nth-child(2){transform:rotate(1.5deg)}
+  .gal figure:nth-child(3){transform:rotate(-0.7deg)}
+
   /* ---------- inline visual editor ---------- */
   #editBtn{position:fixed;bottom:16px;left:16px;z-index:960;background:var(--ink);color:var(--cream);border:none;border-radius:50px;padding:.62rem 1.1rem;font-size:.72rem;letter-spacing:.1em;cursor:pointer;font-family:'Manrope',sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.18)}
   body.editing [data-cms]{outline:1.5px dashed var(--gold);outline-offset:5px;border-radius:2px}
@@ -239,9 +278,9 @@
   <div class="wrap">
     <span class="brand-spacer"></span>
     <nav>
-      <a href="#work" data-cursor>Studio</a>
       <a href="#selected-work" data-cursor>Work</a>
       <a href="#packages" data-cursor>Packages</a>
+      <a href="#about" data-cursor>About</a>
       <a href="#contact" data-cursor>Contact</a>
     </nav>
   </div>
@@ -250,7 +289,11 @@
 <section class="hero" id="top">
   <div class="sun" data-speed="0.6"></div>
   <div class="wrap">
-    <p class="sub reveal" data-cms="heroTagline">Your brand, in its best light. A creative studio for lifestyle, wellness &amp; hospitality brands worth slowing down for.</p>
+    <p class="sub reveal" data-cms="heroTagline">Every founder carries a vision — sometimes they just need help seeing it more clearly. SOLA is a creative studio for lifestyle, wellness &amp; hospitality brands worth slowing down for.</p>
+    <div class="hero-cta reveal">
+      <a href="#contact" class="btn-primary" data-cursor>Work with us</a>
+      <a href="#selected-work" class="btn-ghost" data-cursor>View our work</a>
+    </div>
   </div>
   <div class="scroll-cue">
     <div class="wrap">
@@ -353,14 +396,15 @@
         <div class="pk-fill"></div>
         <div class="pk-row">
           <div class="pk-main">
-            <span class="pk-no">01</span>
-            <span class="pk-name">Creative Direction</span>
+            <span class="pk-no">From £1,000</span>
+            <span class="pk-name">Brand Foundations</span>
           </div>
-          <span class="pk-tag">For brands that have evolved, but aren't yet in focus.</span>
+          <span class="pk-tag">Clarity before investing in a full identity.</span>
         </div>
         <div class="pk-detail">
-          <p class="pk-desc">A collaborative process to uncover the story, positioning and visual world already sitting beneath the surface of your brand — refining how it looks, feels and communicates.</p>
-          <div class="pk-for"><span>feeling disconnected</span><span>a new chapter</span><span>relaunch &amp; elevated positioning</span></div>
+          <p class="pk-desc">For founders and businesses needing clarity before investing in a full identity.</p>
+          <p class="pk-incl"><b>Includes</b>Brand audit · Audience refinement · Positioning review · Competitor review · Visual direction · Moodboards · Content &amp; storytelling direction · Strategic recommendations</p>
+          <div class="pk-for"><span>founder brands</span><span>coaches</span><span>educators</span><span>wellness</span><span>early-stage</span></div>
         </div>
       </div>
 
@@ -368,14 +412,15 @@
         <div class="pk-fill"></div>
         <div class="pk-row">
           <div class="pk-main">
-            <span class="pk-no">02</span>
-            <span class="pk-name">Brand Identity &amp; Visual World</span>
+            <span class="pk-no">From £1,500</span>
+            <span class="pk-name">Founder Brand Intensive</span>
           </div>
-          <span class="pk-tag">Bringing your brand into its best light.</span>
+          <span class="pk-tag">For founders who are the face of the business.</span>
         </div>
         <div class="pk-detail">
-          <p class="pk-desc">A deeper partnership combining positioning, visual identity and creative direction — from colour and typography to storytelling and customer touchpoints — building a world that feels unmistakably yours.</p>
-          <div class="pk-for"><span>lifestyle brands</span><span>wellness</span><span>hospitality</span><span>founder-led brands</span></div>
+          <p class="pk-desc">For founders who are the face of the business and need a more cohesive personal brand.</p>
+          <p class="pk-incl"><b>Includes</b>Discovery workshop · Personal brand positioning · Audience refinement · Messaging direction · Visual direction · Content ecosystem guidance · Profile &amp; platform review · Personal brand roadmap</p>
+          <div class="pk-for"><span>coaches</span><span>consultants</span><span>thought leaders</span><span>educators</span><span>experts</span></div>
         </div>
       </div>
 
@@ -383,14 +428,15 @@
         <div class="pk-fill"></div>
         <div class="pk-row">
           <div class="pk-main">
-            <span class="pk-no">03</span>
-            <span class="pk-name">Content &amp; Campaign Direction</span>
+            <span class="pk-no">From £2,500</span>
+            <span class="pk-name">Identity Evolution</span>
           </div>
-          <span class="pk-tag">Content with purpose, not just volume.</span>
+          <span class="pk-tag">Align how your brand looks with the work it delivers.</span>
         </div>
         <div class="pk-detail">
-          <p class="pk-desc">Creative direction and content development that translate your brand into imagery, campaigns and experiences people connect with — aligned with the wider story you're telling.</p>
-          <div class="pk-for"><span>product launches</span><span>campaigns</span><span>founder storytelling</span><span>brand shoots</span></div>
+          <p class="pk-desc">A strategic identity project designed to align how a brand looks with the quality of the work it delivers.</p>
+          <p class="pk-incl"><b>Includes</b>Brand strategy · Audience refinement · Creative direction · Logo refinement or redesign · Colour palette · Typography system · Visual identity system · Canva ecosystem · Brand guidelines</p>
+          <div class="pk-for"><span>wellness</span><span>lifestyle</span><span>education</span><span>hospitality</span><span>founder-led</span></div>
         </div>
       </div>
 
@@ -398,14 +444,31 @@
         <div class="pk-fill"></div>
         <div class="pk-row">
           <div class="pk-main">
-            <span class="pk-no">04</span>
-            <span class="pk-name">Ongoing Creative Partnership</span>
+            <span class="pk-no">From £4,500</span>
+            <span class="pk-name">Campaign Build</span>
           </div>
-          <span class="pk-tag">A trusted creative partner in your corner.</span>
+          <span class="pk-tag">Creative direction for launches &amp; experiences.</span>
         </div>
         <div class="pk-detail">
-          <p class="pk-desc">Ongoing support, creative guidance and accountability as you evolve — maintaining consistency, refining ideas and reviewing content so your brand keeps growing intentionally.</p>
-          <div class="pk-for"><span>growing founder brands</span><span>evolving concepts</span><span>scaling presence</span></div>
+          <p class="pk-desc">Creative direction and campaign development for launches, collections and hospitality experiences.</p>
+          <p class="pk-incl"><b>Includes</b>Campaign concept · Creative direction · Art direction · Storytelling framework · Moodboards · Shot planning · Production guidance · Asset recommendations · <em>Optional: shoot production, photography, videography, styling</em></p>
+          <div class="pk-for"><span>hospitality</span><span>product brands</span><span>wellness</span><span>lifestyle</span></div>
+        </div>
+      </div>
+
+      <div class="pk-item" data-cursor data-cursor-label="open">
+        <div class="pk-fill"></div>
+        <div class="pk-row">
+          <div class="pk-main">
+            <span class="pk-no">From £1,500</span>
+            <span class="pk-name">Content Day</span>
+          </div>
+          <span class="pk-tag">A library of aligned imagery and video.</span>
+        </div>
+        <div class="pk-detail">
+          <p class="pk-desc">A content production day designed to create a library of aligned imagery and video.</p>
+          <p class="pk-incl"><b>Includes</b>Creative direction · Shot planning · Half or full day production · Photography and/or video · Edited asset delivery</p>
+          <div class="pk-for"><span>founders</span><span>personal brands</span><span>hospitality</span><span>product brands</span></div>
         </div>
       </div>
 
@@ -420,6 +483,13 @@
   </div>
 </section>
 
+<section class="testi">
+  <div class="wrap">
+    <blockquote class="reveal">We appreciated the thoughtful approach you brought to capturing the property and its atmosphere — imagery that reflected the character and ambiance of Nirjhara in an authentic way.</blockquote>
+    <p class="cite reveal">— Nirjhara</p>
+  </div>
+</section>
+
 <section class="gal">
   <div class="wrap">
     <div class="row">
@@ -430,12 +500,39 @@
   </div>
 </section>
 
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="grid">
+      <div class="reveal">
+        <p class="eyebrow">Behind SOLA</p>
+        <h2 class="serif">A global, sunny studio for brands worth slowing down for.</h2>
+        <p>Inspired by light, we work as strategic and creative partners — helping founders uncover the ideas, stories and visual worlds that already exist beneath the surface, then bringing them into focus.</p>
+        <p>Through strategy, storytelling and creative direction, we help brands become more aligned, more recognisable and more deeply felt.</p>
+      </div>
+      <div class="about-media reveal"><img src="assets/founders.jpg" alt="SOLA founders" loading="lazy"/></div>
+    </div>
+    <div class="bios">
+      <div class="bio reveal">
+        <h3 class="serif">Swan</h3>
+        <p class="role">Creative Director</p>
+        <p>A creative director with a background in visual storytelling, brand identity and content direction across fashion, lifestyle and hospitality. Drawn to quiet detail and the emotional side of branding, Swan leads creative direction — translating ideas into cohesive visual worlds that feel considered, elevated and alive.</p>
+      </div>
+      <div class="bio reveal">
+        <h3 class="serif">Becks</h3>
+        <p class="role">Studio Director</p>
+        <p>A studio director working across brand strategy, storytelling and creative development for founder-led, experience-led businesses. With a background spanning wellness, coaching and digital business, Becks shapes each brand's strategic foundation — clarity, intention and a narrative that feels aligned and commercially grounded.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="contact" id="contact">
   <div class="wrap grid">
     <div class="reveal">
       <p class="eyebrow" style="margin-bottom:1.4rem">Contact</p>
       <h2 class="serif">You already carry the vision.<br><em>Let's bring it into focus.</em></h2>
       <p class="lead">Whether you're refining an existing brand, preparing for a new chapter or starting from the very beginning — we'd love to hear your story.</p>
+      <p class="lead"><a href="mailto:becks@thesola.studio" data-cursor style="color:var(--gold)">becks@thesola.studio</a></p>
     </div>
     <form class="reveal" onsubmit="return false">
       <div class="field"><input type="text" id="n" required /><label for="n">Name</label></div>
