@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>About — SOLA</title>
+<meta name="description" content="Behind SOLA — a global, sunny creative studio. Meet founders Swan (Creative Director) and Becks (Studio Director)." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+<div class="cursor-dot"></div>
+<div class="cursor-ring"><span class="label"></span></div>
+<div class="demo-badge">SOLA · Private Demo by Stratoma AI</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a href="index.html" class="brand serif" data-cursor>SOLA</a>
+    <nav>
+      <a href="work.html" data-cursor>Work</a>
+      <a href="packages.html" data-cursor>Packages</a>
+      <a href="about.html" class="active" data-cursor>About</a>
+      <a href="contact.html" data-cursor>Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="wrap reveal">
+    <p class="eyebrow">Behind SOLA</p>
+    <h1 class="serif">Every founder carries a <em>vision.</em></h1>
+    <p>Sometimes they just need someone to help them see it more clearly.</p>
+  </div>
+</section>
+
+<section class="about">
+  <div class="wrap">
+    <div class="grid">
+      <div class="reveal">
+        <h2 class="serif">A global, sunny studio for brands worth slowing down for.</h2>
+        <p>Inspired by light, we work as strategic and creative partners — helping founders uncover the ideas, stories and visual worlds that already exist beneath the surface, then bringing them into focus.</p>
+        <p>Through strategy, storytelling and creative direction, we help brands become more aligned, more recognisable and more deeply felt — weaving together identity, story and atmosphere to create something people want to return to.</p>
+        <p>Because the strongest brands aren't the ones people see once. They're the ones people remember.</p>
+      </div>
+      <div class="about-media reveal"><img src="assets/founders.jpg" alt="SOLA founders" loading="lazy"/></div>
+    </div>
+    <div class="bios">
+      <div class="bio reveal">
+        <h3 class="serif">Swan</h3>
+        <p class="role">Creative Director</p>
+        <p>A creative director with a background in visual storytelling, brand identity and content direction across fashion, lifestyle and hospitality. Drawn to quiet detail and the emotional side of branding, Swan leads creative direction — translating ideas into cohesive visual worlds that feel considered, elevated and alive.</p>
+      </div>
+      <div class="bio reveal">
+        <h3 class="serif">Becks</h3>
+        <p class="role">Studio Director</p>
+        <p>A studio director working across brand strategy, storytelling and creative development for founder-led, experience-led businesses. With a background spanning wellness, coaching and digital business, Becks shapes each brand's strategic foundation — clarity, intention and a narrative that feels aligned and commercially grounded.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testi">
+  <div class="wrap">
+    <blockquote class="reveal">We appreciated the thoughtful approach you brought to capturing the property and its atmosphere — imagery that reflected the character and ambiance of Nirjhara in an authentic way.</blockquote>
+    <p class="cite reveal">— Nirjhara</p>
+  </div>
+</section>
+
+<section class="gal">
+  <div class="wrap">
+    <div class="row">
+      <figure class="reveal"><img src="assets/gal1.jpg" alt="Nirjhara — atmosphere" loading="lazy"/><figcaption>Atmosphere</figcaption></figure>
+      <figure class="reveal"><img src="assets/gal2.jpg" alt="Sensei the Label — stillness" loading="lazy"/><figcaption>Stillness</figcaption></figure>
+      <figure class="reveal"><img src="assets/gal3.jpg" alt="Nirjhara — light" loading="lazy"/><figcaption>Light</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap grid">
+    <div class="meta">
+      Brand strategy · Creative direction · Storytelling<br>
+      <a href="https://www.instagram.com/thesola_studio/" data-cursor>@thesola_studio</a><br>
+      <a href="mailto:becks@thesola.studio" data-cursor>becks@thesola.studio</a><br>
+      <a href="admin.html" data-cursor style="color:var(--gold)">Admin access →</a>
+    </div>
+    <div class="meta" style="text-align:right">Your brand,<br>in its best light.</div>
+  </div>
+</footer>
+
+<div class="strato">
+  <div>Demo desarrollada por</div><b>Stratoma AI</b>
+  <button onclick="this.parentElement.remove()" aria-label="close">×</button>
+</div>
+
+<button id="editBtn">✎ Edit page</button>
+<div id="editBar">
+  <span class="ttl">Editing — click any text to change it</span>
+  <label>Accent <input type="color" id="editAccent" value="#ddba6a"/></label>
+  <button class="save" id="editSave">Save &amp; publish</button>
+  <button class="cancel" id="editCancel">Cancel</button>
+</div>
+<div id="editToast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
