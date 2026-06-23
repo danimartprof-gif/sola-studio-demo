@@ -48,24 +48,26 @@ header.nav nav a:hover,header.nav nav a.active{opacity:1}
 
 /* ---------- home collage hero ---------- */
 .home-hero{position:relative;min-height:100svh;overflow:hidden}
-.hh-words{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:1vh;pointer-events:none;z-index:2}
-.hh-word{font-family:'Lora',serif;font-weight:300;line-height:.82;font-size:clamp(4.5rem,18vw,16rem);letter-spacing:.02em;color:var(--ink)}
-.hh-word-1{margin-left:4vw}
-.hh-word-2{align-self:flex-end;margin-right:5vw;color:var(--gold);font-style:italic}
-.hh-img{position:absolute;object-fit:cover;box-shadow:0 24px 70px rgba(0,0,0,.45);z-index:3}
-.hh-a{width:clamp(120px,15vw,240px);aspect-ratio:3/4;top:15vh;right:19vw;transform:rotate(4deg)}
-.hh-b{width:clamp(150px,18vw,290px);aspect-ratio:4/5;top:33vh;left:33vw;transform:rotate(-4deg)}
-.hh-c{width:clamp(110px,13vw,210px);aspect-ratio:1;bottom:15vh;left:9vw;transform:rotate(3deg)}
-.hh-tag{position:absolute;left:4vw;bottom:7vh;max-width:30ch;color:var(--ink-soft);font-size:clamp(.95rem,1.3vw,1.2rem);z-index:4}
-.hh-cta{position:absolute;right:5vw;bottom:7vh;z-index:4;display:flex;gap:1rem;flex-wrap:wrap}
+.hh-words{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:13vh 0 11vh;pointer-events:none;z-index:2}
+.hh-word{font-family:'Lora',serif;font-weight:400;line-height:.8;font-size:clamp(4.2rem,19vw,17rem);letter-spacing:.02em;color:var(--ink);text-transform:uppercase}
+.hh-word-1{margin-left:-0.5vw}
+.hh-word-2{align-self:flex-end;margin-right:-0.5vw}
+.hh-img{position:absolute;object-fit:cover;box-shadow:0 24px 70px rgba(0,0,0,.5);z-index:3}
+.hh-a{width:clamp(130px,15vw,250px);aspect-ratio:1;top:8vh;right:6vw;transform:rotate(2deg)}
+.hh-b{width:clamp(160px,19vw,300px);aspect-ratio:4/5;top:29vh;left:37vw;transform:rotate(-2deg)}
+.hh-c{width:clamp(115px,13vw,215px);aspect-ratio:3/4;top:40vh;left:9vw;transform:rotate(3deg)}
+.hh-tag{position:absolute;left:4vw;bottom:5vh;max-width:30ch;color:var(--ink-soft);font-size:clamp(.95rem,1.3vw,1.2rem);z-index:4}
+.hh-cta{position:absolute;right:5vw;bottom:5vh;z-index:4;display:flex;gap:1rem;flex-wrap:wrap}
 @media(max-width:760px){
-  .hh-words{justify-content:flex-start;padding-top:16vh}
-  .hh-word{font-size:clamp(3.2rem,21vw,7rem);text-align:center;margin:0 auto !important;align-self:center}
-  .hh-a{top:auto;bottom:30vh;right:6vw;width:36vw}
+  .hh-words{padding:14vh 0 12vh}
+  .hh-word{font-size:clamp(3.4rem,20vw,7rem)}
+  .hh-word-1{margin-left:5vw}
+  .hh-word-2{margin-right:5vw}
+  .hh-a{top:9vh;right:5vw;width:30vw}
   .hh-b{display:none}
-  .hh-c{bottom:30vh;left:6vw;width:34vw}
-  .hh-tag{left:6vw;right:6vw;bottom:14vh;text-align:center;max-width:none}
-  .hh-cta{left:0;right:0;justify-content:center;bottom:5vh}
+  .hh-c{top:auto;bottom:26vh;left:5vw;width:32vw}
+  .hh-tag{left:5vw;right:5vw;bottom:15vh;max-width:none}
+  .hh-cta{left:0;right:0;padding:0 5vw;justify-content:space-between;bottom:5vh}
 }
 
 /* ---------- page hero (subpages) ---------- */
